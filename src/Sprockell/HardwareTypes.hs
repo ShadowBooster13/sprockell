@@ -76,7 +76,7 @@ instance Memory [] where
     toList          = id
     xs ! i          = xs !! i
     []     <~ _     = []                             -- silently ignore update after end of list
-    (x:xs) <~ (0,y) = y:xs
+    (_:xs) <~ (0,y) = y:xs
     (x:xs) <~ (n,y) = x : (xs <~ (n-1,y))
 
 instance Memory (Array.Array Int) where

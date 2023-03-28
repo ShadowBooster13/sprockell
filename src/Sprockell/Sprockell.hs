@@ -110,17 +110,17 @@ decode instr = case instr of
   Receive toReg               -> nullcode {ldCode=LdInp, tgtCode=Waiting, loadReg=toReg}
 
   ReadInstr memAddr           -> case memAddr of
-                                   ImmValue n  -> nullcode -- undefined
+                                   ImmValue _-> nullcode -- undefined
                                    DirAddr a   -> nullcode {ioCode=IORead, ldCode=LdMem, aguCode=AguDir, addrImm=a}
                                    IndAddr p   -> nullcode {ioCode=IORead, ldCode=LdMem, aguCode=AguInd, regX=p}
 
   WriteInstr fromReg memAddr  -> case memAddr of
-                                   ImmValue n  -> nullcode -- undefined
+                                   ImmValue _  -> nullcode -- undefined
                                    DirAddr a   -> nullcode {ioCode=IOWrite, regY=fromReg, ldCode=LdMem, aguCode=AguDir, addrImm=a}
                                    IndAddr p   -> nullcode {ioCode=IOWrite, regY=fromReg, ldCode=LdMem, aguCode=AguInd, regX=p}
 
   TestAndSet memAddr          -> case memAddr of
-                                   ImmValue n  -> nullcode -- undefined
+                                   ImmValue _  -> nullcode -- undefined
                                    DirAddr a   -> nullcode {ioCode=IOTest, ldCode=LdMem, aguCode=AguDir, addrImm=a}
                                    IndAddr p   -> nullcode {ioCode=IOTest, ldCode=LdMem, aguCode=AguInd, regX=p}
 

@@ -21,7 +21,7 @@ sprockellSim :: InstructionMem
                 -> [Reply]
                 -> [(Instruction, SprockellState, Request)]
 
-sprockellSim instrs s []     = []
+sprockellSim _ _ []     = []
 sprockellSim instrs s (i:is) | instr /= EndProg    = (instr,s',o) : sprockellSim instrs s' is
                              | otherwise           = []
                 where
@@ -47,7 +47,7 @@ sprTest sprID instrs input = putStr
 -- ====================================================================================================
 
 systemSim :: DebuggerPair st -> [InstructionMem] -> SystemState -> Clock -> IO ()
-systemSim (dbg,dbgSt) instrss s []     = return ()
+systemSim (_,_) _ _ []     = return ()
 systemSim (dbg,dbgSt) instrss s (t:ts) | sysHalted = return ()
                                        | otherwise = do
                                            let curInstrs = zipWith (!) instrss (map pc $ sprStates s)
@@ -56,11 +56,12 @@ systemSim (dbg,dbgSt) instrss s (t:ts) | sysHalted = return ()
                                            systemSim (dbg,dbgSt') instrss s'' ts
     where
         instrs    = zipWith (!) instrss (map pc $ sprStates s)
-        sysHalted = (and $ map (==EndProg) $ zipWith (!) instrss $ map pc $ sprStates s)
-                  && (and $ map and $ map (map (==NoRequest)) $ requestChnls s)
-                  && (and $ map (\(_,r) -> r == NoRequest) $ requestFifo s)
+        sysHalted = all (==EndProg) (zipWith (!) instrss $ map pc $ sprStates s)
+                  && all (all (==NoRequest)) (requestChnls s)
+                  && all (\(_,r) -> r == NoRequest) (requestFifo s)
 
 
+initSystemState :: Value -> SystemState
 initSystemState nrOfSprockells = SystemState
         { sprStates     = map initSprockellState [0 .. nrOfSprockells-1]
         , requestChnls  = replicate nrOfSprockells $ replicate channelDelay NoRequest

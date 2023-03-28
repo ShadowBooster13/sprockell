@@ -54,7 +54,7 @@ debuggerPrintCondWaitCond :: (DbgInput -> String) -- ^ show function used to sho
                           -> Debugger ()
 debuggerPrintCondWaitCond showF showCond waitCond (inp,out) = (dbg, ())
     where
-        dbg dbgSt now@(instrs,sysSt) = do
+        dbg dbgSt now@(_,sysSt) = do
             when (showCond now) (hPutStrLn out $ showF now)
             when (waitCond now) (void $ hGetLine inp) -- wait for enter key
             return (dbgSt,sysSt)
@@ -72,8 +72,9 @@ myShow (instrs,s) = printf "instrs: %s\nsprStates:\n%s\nrequests: %s\nreplies: %
                     (show $ requestFifo s)
                     (show $ sharedMem s)
 
+myShow' :: Show a => (a, SystemState) -> [Char]
 myShow' (instrs,s) = show instrs ++ "\n"
-                     ++ (unlines $ map show $ sprStates s)
+                     ++ unlines (map show $ sprStates s)
 
 
 -- ======================================================================
@@ -85,7 +86,7 @@ never  = const False
 
 -- | Checks whether any core in executing a Jump instruction
 whenJumping :: DbgInput -> Bool
-whenJumping (instrs,st) = any isJump instrs
+whenJumping (instrs,_) = any isJump instrs
     where
         isJump (Jump _) = True
         isJump _        = False

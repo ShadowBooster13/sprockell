@@ -28,25 +28,25 @@ shMem sharedMem (i,req)
     | isNumberIOreq req = do
         reply <- case req of
                     NoRequest     -> return Nothing
-                    ReadReq a     -> do
+                    ReadReq _     -> do
                         let prompt = printf "Sprockell %i asks for a number: " i
                         fmap Just (promptForRead prompt)
-                    WriteReq v a  -> do
+                    WriteReq v _  -> do
                         printf "Sprockell %i says %i\n" i v
                         return Nothing
-                    TestReq a     -> error $ "TestAndSet on IO address: " ++ show req ++ " not supported"
+                    TestReq _ -> error $ "TestAndSet on IO address: " ++ show req ++ " not supported"
         return (sharedMem,(i,reply))
     | isCharIOreq req = do
         reply <- case req of
                     NoRequest     -> return Nothing
-                    ReadReq a     -> do
+                    ReadReq _ -> do
                         --mChar :: Maybe Char
                         mChar <- hGetCharNonBlocking stdin
                         return (Just $ maybe 0 ord mChar)
-                    WriteReq v a  -> do
+                    WriteReq v _  -> do
                         putChar $ chr v
                         return Nothing
-                    TestReq a     -> error $ "TestAndSet on IO address: " ++ show req ++ " not supported"
+                    TestReq _     -> error $ "TestAndSet on IO address: " ++ show req ++ " not supported"
         return (sharedMem,(i,reply))
     | otherwise   = return (sharedMem', (i,reply))
         where
@@ -62,7 +62,7 @@ shMem sharedMem (i,req)
 hGetCharNonBlocking :: Handle -> IO (Maybe Char)
 hGetCharNonBlocking h = do
     ready <- hReady h
-    if ready then fmap Just $ hGetChar h
+    if ready then Just <$> hGetChar h
              else return Nothing
 
 -- | Non-blocking variant of getChar
@@ -110,17 +110,17 @@ updateFifo requestFifo chRequests = (requestFifo', req)
 
 -- ===================================================================================
 transferA :: (RequestChannels, ReplyChannels)
-                -> (ParRequests)
-                -> ((RequestChannels), (ParReplies, IndRequests))
+                -> ParRequests
+                -> (RequestChannels, (ParReplies, IndRequests))
 
-transferA (requestChnls,replyChnls) (sprRequests) = ( (requestChnls'), (outReplies,outRequests) )
+transferA (requestChnls,replyChnls) sprRequests = ( requestChnls', (outReplies,outRequests) )
         where
           -- ->->->->
-          outRequests   = zip [0..] $ map head requestChnls                                             -- <<== TODO: abstract away from softare/hardware
+          outRequests   = zip [0..] $ map head requestChnls                                             -- <<== TODO: abstract away from software/hardware
           requestChnls' = zipWith (<<+) requestChnls sprRequests
 
           -- <-<-<-<-
-          n             = length replyChnls                                                             -- <<== TODO: abstraction difficult:
+          _             = length replyChnls                                                             -- <<== TODO: abstraction difficult:
           --inReplies     = replicate n Nothing <~ (i,shMemReply)                                         --              no parameter n in CLaSH
           outReplies    = map head replyChnls
           --replyChnls'   = zipWith (<<+) replyChnls inReplies
@@ -146,7 +146,7 @@ system instrss systemState _ = do
           (sprStates',sprRequests)                              = unzip $ sprockell $> instrss |$| sprStates |$| chReplies
 
           -- Communication
-          ((requestChnls'), (chReplies,chRequests)) = transferA (requestChnls,replyChnls) (sprRequests)
+          (requestChnls', (chReplies,chRequests)) = transferA (requestChnls,replyChnls) sprRequests
 
           (requestFifo',request) = updateFifo requestFifo chRequests
           -- Shared Memory
