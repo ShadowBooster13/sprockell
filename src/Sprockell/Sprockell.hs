@@ -182,11 +182,11 @@ alu op x y = case op of
         GtE    -> intBool (x >= y)
         Lt     -> intBool (x < y)
         LtE    -> intBool (x <= y)
-        And    -> x .&. y
+        Sprockell.HardwareTypes.And    -> x .&. y
         Or     -> x .|. y
         LShift -> shiftL x (fromIntegral y)
         RShift -> shiftR x (fromIntegral y)
-        Xor    -> x `xor` y
+        Sprockell.HardwareTypes.Xor    -> x `xor` y
         -- Div    -> x `div` y                          -- usable in Haskell, but expensive on hardware
         -- Mod    -> x `mod` y                          -- Ibid
 

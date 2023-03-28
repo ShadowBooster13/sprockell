@@ -223,6 +223,7 @@ data MachCode = MachCode                                        -- machine code:
 -- ==========================================================================================================
 data Tick  = Tick        deriving (Eq,Show)
 type Clock = [Tick]
+clock :: [Tick]
 clock = repeat Tick
 
 

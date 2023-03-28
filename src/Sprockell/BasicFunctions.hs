@@ -15,18 +15,23 @@ regSP         = regbankSize                          -- register for stack point
 regPC         = regbankSize + 1                      -- register for program counter
 
 -- defines the number of registers excluding the stack pointer & program counter
+regbankSize :: Int
 regbankSize   =  8   :: Int
+localMemSize :: Int
 localMemSize  = 32   :: Int
 
+shMemSize :: Int
 shMemSize     =  8   :: Int
+channelDelay :: Int
 channelDelay  =  4   :: Int
 
 
+intBool :: Num p => Bool -> p
 intBool True  = 1                                    -- Bool-to-Int
 intBool False = 0
 
 (+>>) :: a -> [a] -> [a]
-x +>> xs = [x] ++ init xs                            -- shift value into buffer at the beginning
+x +>> xs = x : init xs                            -- shift value into buffer at the beginning
 
 (<<+) :: [a] -> a -> [a]
 xs <<+ x = tail xs ++ [x]                            -- shift value into buffer at the end
