@@ -40,6 +40,8 @@ You can also find some practical usage of this in the [continuous integration](.
 
 ### Run directly
 
+Before running the below commands, make sure the `stack` executable is in your path, or use an absolute path instead.
+
 ```bash
 # Ensure sprockell libs are built
 $ stack build
