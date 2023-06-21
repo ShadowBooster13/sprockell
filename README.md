@@ -72,7 +72,7 @@ See the [Stack documentation] for instructions on how to add executables to proj
 You could automatically generate a Stack project, containing your output Haskell/Sprockell file, which depends via a git url on this Sprockell package. We again refer you to the [Stack documentation].
 
 [HardwareTypes.hs]: src/Sprockell/HardwareTypes.hs#L115
-[DemoFib.hs]: demos/fib/DemoFib.hs
-[DemoCharIO.hs]: demos/char-io/DemoCharIO.hs
-[DemoMultipleSprockells.hs]: demos/multiple-sprockells/DemoMultipleSprockells.hs
+[DemoFib.hs]: demos/DemoFib.hs
+[DemoCharIO.hs]: demos/DemoCharIO.hs
+[DemoMultipleSprockells.hs]: demos/DemoMultipleSprockells.hs
 [Stack documentation]: https://docs.haskellstack.org/en/stable/README/
