@@ -32,6 +32,8 @@ You can use this Sprockell package in several ways:
 
 You can also find some practical usage of this in the [continuous integration](./runDemos.sh).
 
+Before running the below commands, make sure the `stack` executable is in your path, or use an absolute path instead.
+
 **Caveats:**
 
 - Do not put Sprockell on file synchronization services (onedrive, dropbox, owncloud, etc). Technically we can't stop you, but don't get angry at TAs for not helping you if you do. Students have had issues with this in the past.
@@ -39,8 +41,6 @@ You can also find some practical usage of this in the [continuous integration](.
     - This was once raised here: <https://github.com/commercialhaskell/stack/issues/3893>. Unfortunately there has not been follow-up since then, so putting stack on strange places is probably best avoided.
 
 ### Run directly
-
-Before running the below commands, make sure the `stack` executable is in your path, or use an absolute path instead.
 
 ```bash
 # Ensure sprockell libs are built
