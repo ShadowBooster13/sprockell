@@ -21,7 +21,7 @@ localMemSize :: Int
 localMemSize  = 32   :: Int
 
 shMemSize :: Int
-shMemSize     =  8   :: Int
+shMemSize     =  16   :: Int
 channelDelay :: Int
 channelDelay  =  4   :: Int
 
