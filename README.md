@@ -32,6 +32,14 @@ You can use this Sprockell package in several ways:
 
 You can also find some practical usage of this in the [continuous integration](./runDemos.sh).
 
+Before running the below commands, make sure the `stack` executable is in your path, or use an absolute path instead.
+
+**Caveats:**
+
+- Do not put Sprockell on file synchronization services (onedrive, dropbox, owncloud, etc). Technically we can't stop you, but don't get angry at TAs for not helping you if you do. Students have had issues with this in the past.
+- Do not put stack projects on removable disks, flash drives, etc.
+    - This was once raised here: <https://github.com/commercialhaskell/stack/issues/3893>. Unfortunately there has not been follow-up since then, so putting stack on strange places is probably best avoided.
+
 ### Run directly
 
 ```bash
@@ -64,7 +72,7 @@ See the [Stack documentation] for instructions on how to add executables to proj
 You could automatically generate a Stack project, containing your output Haskell/Sprockell file, which depends via a git url on this Sprockell package. We again refer you to the [Stack documentation].
 
 [HardwareTypes.hs]: src/Sprockell/HardwareTypes.hs#L115
-[DemoFib.hs]: demos/fib/DemoFib.hs
-[DemoCharIO.hs]: demos/char-io/DemoCharIO.hs
-[DemoMultipleSprockells.hs]: demos/multiple-sprockells/DemoMultipleSprockells.hs
+[DemoFib.hs]: demos/DemoFib.hs
+[DemoCharIO.hs]: demos/DemoCharIO.hs
+[DemoMultipleSprockells.hs]: demos/DemoMultipleSprockells.hs
 [Stack documentation]: https://docs.haskellstack.org/en/stable/README/
